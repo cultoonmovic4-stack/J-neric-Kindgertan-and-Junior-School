@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  /* Official J-Neric Crest Color Tokens */
+  --color-crest-navy: #1E2B7B;
+  --color-crest-crimson: #D93829;
+  --color-pencil-gold: #F2C21A;
+  --color-laurel-green: #1F7A3E;
+  --color-crest-sky: #1D9BF0;
+
+  /* Editorial Surfaces, Ink & Rules */
+  --color-paper-ivory: #F8F7F4;
+  --color-pure-white: #FFFFFF;
+  --color-slate-ink: #1A1D29;
+  --color-muted-slate: #525866;
+  --color-rule-gray: #DEDCD6;
+
+  /* Institutional Typography */
+  --font-serif: "Merriweather", Georgia, Cambria, "Times New Roman", serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background-color: var(--color-paper-ivory);
+    color: var(--color-slate-ink);
+    scroll-behavior: smooth;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    color: var(--color-crest-navy);
+  }
+}
