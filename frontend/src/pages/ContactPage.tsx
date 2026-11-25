@@ -1,5 +1,6 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
+import AOS from 'aos';
 import { schoolProfile } from '../data/schoolProfile';
 import type { GeneralInquiryPayload } from '../types/school';
 import { PageHeader } from '../components/ui/PageHeader';
@@ -97,51 +98,72 @@ export function ContactPage() {
     setConfirmation(null);
   }
 
+  useEffect(() => {
+    AOS.refreshHard();
+  }, [confirmation]);
+
   return (
     <div>
       <PageHeader
         eyebrow="Get in Touch"
         title="Contact & Campus Location"
         lead="We welcome phone calls, written inquiries, and in-person visits to our Namulanda campus off Entebbe Road in Kajjansi Town Council."
-        metaLabel="Direct Telephone"
-        metaValue={`${schoolProfile.phoneDisplay} • Wakiso District`}
+        reversibleAos
       />
 
       {/* 01. Two-Column Contact & General Inquiry Layout */}
-      <section className="py-14 sm:py-16 bg-paper-ivory">
+      <section className="py-14 sm:py-16 bg-pure-white overflow-hidden">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            number="01."
-            eyebrow="Campus Office & Inquiries"
-            title="Reach Our Admissions & Administration Desk"
-          />
+          <div data-aos="fade-up" data-aos-once="false">
+            <SectionHeading
+              number="01."
+              eyebrow="Campus Office & Inquiries"
+              title="Reach Our Admissions & Administration Desk"
+            />
+          </div>
 
-          <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-            {/* Left Column: Official Campus Details */}
-            <div data-aos="fade-up" className="lg:col-span-5 space-y-6">
-              <div className="bg-pure-white border border-rule-gray border-t-[3px] border-t-crest-navy rounded-[3px] p-6 sm:p-7">
-                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-crest-crimson">
-                  Official Campus Directory
-                </p>
-                <h3 className="font-serif text-xl font-bold text-crest-navy mt-1.5">
-                  {schoolProfile.name}
-                </h3>
+          <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:items-stretch">
+            {/* Left Column: Official Campus Directory (Open Editorial Line Separators) */}
+            <div className="lg:col-span-5 lg:border-r lg:border-rule-gray lg:pr-10 flex">
+              <div className="w-full h-full lg:min-h-[680px] flex flex-col">
+                <div
+                  data-aos="fade-right"
+                  data-aos-once="false"
+                  className="pb-6 border-b border-rule-gray"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-crest-crimson">
+                    Official Campus Directory
+                  </p>
+                  <h3 className="font-serif text-xl font-bold text-crest-navy mt-2">
+                    {schoolProfile.name}
+                  </h3>
+                </div>
 
-                <dl className="mt-5 divide-y divide-rule-gray border-t border-b border-rule-gray text-sm">
-                  <div className="py-3.5">
+                <dl className="flex-1 flex flex-col divide-y divide-rule-gray border-b border-rule-gray text-sm">
+                  <div
+                    data-aos="fade-up"
+                    data-aos-once="false"
+                    data-aos-delay="40"
+                    className="py-5 flex-1 flex flex-col justify-center"
+                  >
                     <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted-slate">
                       Physical Campus Address
                     </dt>
-                    <dd className="mt-1 text-slate-ink font-medium leading-relaxed">
+                    <dd className="mt-2 text-slate-ink font-medium leading-relaxed">
                       {schoolProfile.locationFull}
                     </dd>
                   </div>
 
-                  <div className="py-3.5">
+                  <div
+                    data-aos="fade-up"
+                    data-aos-once="false"
+                    data-aos-delay="80"
+                    className="py-5 flex-1 flex flex-col justify-center"
+                  >
                     <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted-slate">
                       Direct Admissions Telephone
                     </dt>
-                    <dd className="mt-1">
+                    <dd className="mt-2">
                       <a
                         href={schoolProfile.phoneHref}
                         className="font-serif text-lg font-bold text-crest-navy hover:text-crest-crimson transition-colors"
@@ -151,41 +173,56 @@ export function ContactPage() {
                     </dd>
                   </div>
 
-                  <div className="py-3.5">
+                  <div
+                    data-aos="fade-up"
+                    data-aos-once="false"
+                    data-aos-delay="120"
+                    className="py-5 flex-1 flex flex-col justify-center"
+                  >
                     <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted-slate">
                       Office Visiting Hours
                     </dt>
-                    <dd className="mt-1 text-slate-ink space-y-1">
+                    <dd className="mt-2.5 text-slate-ink space-y-2.5">
                       <p>{schoolProfile.officeHours.weekdays}</p>
                       <p>{schoolProfile.officeHours.saturday}</p>
-                      <p className="text-xs text-muted-slate">
+                      <p className="text-muted-slate">
                         {schoolProfile.officeHours.sunday}
                       </p>
                     </dd>
                   </div>
 
-                  <div className="py-3.5">
+                  <div
+                    data-aos="fade-up"
+                    data-aos-once="false"
+                    data-aos-delay="160"
+                    className="py-5 flex-1 flex flex-col justify-center"
+                  >
                     <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted-slate">
                       SchoolPay Merchant Name
                     </dt>
-                    <dd className="mt-1">
+                    <dd className="mt-2">
                       <p className="font-semibold text-crest-navy">
                         {schoolProfile.schoolPay.registeredEntityName}
                       </p>
                       <Link
                         to="/admissions#schoolpay"
-                        className="inline-block mt-1 text-xs font-semibold text-crest-crimson underline underline-offset-4 hover:text-crest-navy"
+                        className="inline-block mt-2 text-xs font-semibold text-crest-crimson underline underline-offset-4 hover:text-crest-navy"
                       >
                         Open SchoolPay Payment Guide
                       </Link>
                     </dd>
                   </div>
 
-                  <div className="py-3.5">
+                  <div
+                    data-aos="fade-up"
+                    data-aos-once="false"
+                    data-aos-delay="200"
+                    className="py-5 flex-1 flex flex-col justify-center"
+                  >
                     <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted-slate">
                       School Leadership
                     </dt>
-                    <dd className="mt-1 text-slate-ink">
+                    <dd className="mt-2 text-slate-ink">
                       Director {schoolProfile.director.name}
                     </dd>
                   </div>
@@ -194,12 +231,17 @@ export function ContactPage() {
             </div>
 
             {/* Right Column: General Inquiry Form */}
-            <div data-aos="fade-up" data-aos-delay="100" className="lg:col-span-7">
+            <div
+              data-aos="fade-left"
+              data-aos-once="false"
+              data-aos-delay="100"
+              className="lg:col-span-7 flex"
+            >
               {confirmation ? (
                 <div
                   role="status"
                   aria-live="polite"
-                  className="bg-pure-white border border-rule-gray border-t-[3px] border-t-laurel-green rounded-[3px] p-6 sm:p-8"
+                  className="w-full h-full flex flex-col justify-between bg-pure-white border border-rule-gray border-t-[3px] border-t-laurel-green rounded-[3px] p-7 sm:p-9"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-rule-gray pb-5">
                     <div>
@@ -288,7 +330,7 @@ export function ContactPage() {
                 <form
                   onSubmit={handleSubmit}
                   noValidate
-                  className="bg-pure-white border border-rule-gray rounded-[3px] p-6 sm:p-8 space-y-5"
+                  className="w-full h-full bg-pure-white border border-rule-gray rounded-[3px] p-7 sm:p-9 flex flex-col gap-6"
                 >
                   <div className="border-b border-rule-gray pb-4">
                     <p className="text-xs font-semibold uppercase tracking-[0.15em] text-crest-crimson">
@@ -412,7 +454,7 @@ export function ContactPage() {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="flex-1 flex flex-col">
                     <label
                       htmlFor="contact-message"
                       className="block text-xs font-semibold uppercase tracking-wider text-crest-navy mb-1.5"
@@ -431,7 +473,7 @@ export function ContactPage() {
                         }
                       }}
                       placeholder="How can our school office assist your family today?"
-                      className="w-full px-3.5 py-2.5 text-sm bg-paper-ivory border border-rule-gray rounded-[3px] text-slate-ink focus:outline-none focus:border-crest-navy"
+                      className="w-full flex-1 min-h-[160px] px-3.5 py-2.5 text-sm bg-paper-ivory border border-rule-gray rounded-[3px] text-slate-ink focus:outline-none focus:border-crest-navy"
                     />
                     {errors.message && (
                       <p className="mt-1.5 text-xs text-crest-crimson font-medium">
@@ -440,7 +482,7 @@ export function ContactPage() {
                     )}
                   </div>
 
-                  <div className="pt-2 border-t border-rule-gray flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="mt-auto pt-5 border-t border-rule-gray flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <p className="text-xs text-muted-slate">
                       Prefer to speak directly? Call{' '}
                       <a
@@ -466,17 +508,20 @@ export function ContactPage() {
       </section>
 
       {/* 02. Campus Map Frame */}
-      <section className="py-14 sm:py-16 bg-paper-ivory border-t border-rule-gray">
+      <section className="py-14 sm:py-16 bg-paper-ivory border-t border-rule-gray overflow-hidden">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            number="02."
-            eyebrow="Campus Location Map"
-            title="Finding J-Neric in Namulanda, Kajjansi"
-            description="Conveniently located in Namulanda Ward, Kajjansi Town Council, Wakiso District — easily accessible off the Kampala–Entebbe Road corridor."
-          />
+          <div data-aos="fade-up" data-aos-once="false">
+            <SectionHeading
+              number="02."
+              eyebrow="Campus Location Map"
+              title="Finding J-Neric in Namulanda, Kajjansi"
+            />
+          </div>
 
           <div
             data-aos="fade-up"
+            data-aos-once="false"
+            data-aos-delay="80"
             className="mt-8 bg-pure-white border border-rule-gray rounded-[3px] p-2"
           >
             <div className="relative w-full h-[380px] sm:h-[420px] bg-paper-ivory border border-rule-gray rounded-[2px] overflow-hidden">

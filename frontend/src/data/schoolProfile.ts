@@ -89,8 +89,7 @@ export const schoolProfile: SchoolProfile = {
   ],
   schoolPay: {
     registeredEntityName: 'J-NERIC KINDERGARTEN LTD',
-    summary:
-      'J-Neric Kindergarten & Junior School is officially enrolled on SchoolPay under J-NERIC KINDERGARTEN LTD. Parents can pay school fees securely at any time without carrying cash to campus, with instant digital receipts reconciled directly with the school bursar.',
+    summary:   '',
     channels: [
       {
         index: '01.',
