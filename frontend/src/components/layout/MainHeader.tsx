@@ -54,7 +54,7 @@ export function MainHeader() {
             </div>
           </Link>
 
-          {/* Right Side: Single Tailored Primary CTA (Desktop) + Text-Only Mobile Toggle */}
+          {/* Right Side: Single Tailored Primary CTA (Desktop) + Hamburger Mobile Toggle */}
           <div className="flex items-center gap-3 shrink-0">
             <Link
               to="/admissions"
@@ -68,9 +68,36 @@ export function MainHeader() {
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-primary-nav"
-              className="md:hidden px-3.5 py-2 text-xs font-semibold uppercase tracking-wider text-crest-navy border border-rule-gray rounded-[3px] bg-paper-ivory hover:border-crest-navy transition-colors cursor-pointer"
+              aria-label={
+                mobileMenuOpen
+                  ? 'Close navigation menu'
+                  : 'Open navigation menu'
+              }
+              className="md:hidden inline-flex items-center justify-center w-10 h-10 text-crest-navy border border-rule-gray rounded-[3px] bg-paper-ivory hover:border-crest-navy transition-colors cursor-pointer"
             >
-              {mobileMenuOpen ? 'Close' : 'Menu'}
+              <span className="sr-only">
+                {mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              </span>
+              <span
+                aria-hidden="true"
+                className="flex flex-col items-center justify-center w-5 h-4"
+              >
+                <span
+                  className={`block w-5 h-[2px] bg-crest-navy transition-transform duration-200 ${
+                    mobileMenuOpen ? 'translate-y-[6px] rotate-45' : ''
+                  }`}
+                />
+                <span
+                  className={`block w-5 h-[2px] bg-crest-navy my-[4px] transition-opacity duration-200 ${
+                    mobileMenuOpen ? 'opacity-0' : 'opacity-100'
+                  }`}
+                />
+                <span
+                  className={`block w-5 h-[2px] bg-crest-navy transition-transform duration-200 ${
+                    mobileMenuOpen ? '-translate-y-[6px] -rotate-45' : ''
+                  }`}
+                />
+              </span>
             </button>
           </div>
         </div>
@@ -111,24 +138,21 @@ export function MainHeader() {
             aria-label="Mobile Navigation"
             className="bg-paper-ivory border-t border-rule-gray px-4 sm:px-6 py-4 space-y-1"
           >
-            {navigationItems.map((item, idx) => (
+            {navigationItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 end={item.end}
                 onClick={() => setMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center justify-between px-3 py-2.5 text-sm rounded-[3px] border-l-[3px] transition-colors ${
+                  `block px-3 py-2.5 text-sm rounded-[3px] border-l-[3px] transition-colors ${
                     isActive
                       ? 'bg-pure-white text-crest-crimson font-semibold border-crest-crimson'
                       : 'text-slate-ink font-medium border-transparent hover:bg-pure-white hover:text-crest-navy'
                   }`
                 }
               >
-                <span>{item.label}</span>
-                <span className="text-xs font-normal text-muted-slate">
-                  0{idx + 1}.
-                </span>
+                {item.label}
               </NavLink>
             ))}
 

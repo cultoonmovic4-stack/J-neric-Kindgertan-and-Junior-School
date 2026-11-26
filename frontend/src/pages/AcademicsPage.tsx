@@ -139,18 +139,22 @@ export function AcademicsPage() {
     junior: boolean;
   }>({ kindergarten: false, junior: false });
   const [circleTimeError, setCircleTimeError] = useState(false);
+  const [kindergartenClassErrors, setKindergartenClassErrors] = useState<
+    Record<string, boolean>
+  >({});
   const [juniorClassroomErrors, setJuniorClassroomErrors] = useState<{
     wide: boolean;
     detail: boolean;
   }>({ wide: false, detail: false });
-  const [activePlate, setActivePlate] = useState(0);
+  const [primaryClassErrors, setPrimaryClassErrors] = useState<
+    Record<string, boolean>
+  >({});
   const [plateErrors, setPlateErrors] = useState<Record<string, boolean>>({});
   const [timetableFilter, setTimetableFilter] =
     useState<TimetableFilter>('all');
   const [welcomeVerandaError, setWelcomeVerandaError] = useState(false);
   const kindergarten = academicDivisions.find((d) => d.id === 'kindergarten')!;
   const juniorSchool = academicDivisions.find((d) => d.id === 'junior-school')!;
-  const currentPlate = coCurricularPlates[activePlate];
   const visibleTimetableRows = timetableRows.filter((row) => {
     if (timetableFilter === 'all') return true;
     if (timetableFilter === 'kindergarten') {
@@ -352,20 +356,50 @@ export function AcademicsPage() {
                 {kindergarten.classes.map((cls, index) => (
                   <div
                     key={cls.name}
-                    className="py-5 grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4 items-baseline"
+                    className="py-5 grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-5 items-start"
                   >
-                    <div className="sm:col-span-5">
+                    {cls.image && (
+                      <div className="sm:col-span-4 aspect-[4/3] w-full overflow-hidden rounded-[3px] border border-rule-gray bg-[#EEECE6]">
+                        {!kindergartenClassErrors[cls.name] ? (
+                          <img
+                            src={cls.image}
+                            alt={cls.imageAlt ?? `${cls.name} at J-Neric Kindergarten`}
+                            onError={() =>
+                              setKindergartenClassErrors((prev) => ({
+                                ...prev,
+                                [cls.name]: true,
+                              }))
+                            }
+                            className={`w-full h-full object-cover ${
+                              index === 2 ? 'object-[50%_20%]' : 'object-top'
+                            }`}
+                          />
+                        ) : (
+                          <div className="w-full h-full p-2.5 flex flex-col justify-between bg-[#EEECE6]">
+                            <div className="w-full h-full border border-rule-gray bg-pure-white p-2.5 flex flex-col justify-between">
+                              <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-laurel-green">
+                                Early Years
+                              </span>
+                              <p className="font-serif text-xs font-bold text-crest-navy">
+                                {cls.name}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    <div className={cls.image ? 'sm:col-span-8' : 'sm:col-span-12'}>
                       <h3 className="font-serif font-bold text-crest-navy text-lg">
                         0{index + 1}. {cls.name}
                       </h3>
-                      <span className="block text-[11px] font-bold tracking-[0.08em] uppercase text-crest-crimson mt-0.5">
+                      <span className="block text-[11px] font-bold tracking-[0.08em] uppercase text-crest-crimson mt-0.5 mb-2">
                         AGES {cls.ageRange}
                       </span>
+                      <p className="text-slate-ink/85 text-sm leading-relaxed">
+                        {cls.focus}
+                      </p>
                     </div>
-
-                    <p className="sm:col-span-7 text-slate-ink/85 text-sm leading-relaxed">
-                      {cls.focus}
-                    </p>
                   </div>
                 ))}
               </div>
@@ -507,6 +541,39 @@ export function AcademicsPage() {
 
               return (
                 <div key={cls.name} className={colSpacing}>
+                  {cls.image && (
+                    <div className="aspect-[16/10] w-full overflow-hidden rounded-[3px] border border-rule-gray bg-[#EEECE6] mb-4">
+                      {!primaryClassErrors[cls.name] ? (
+                        <img
+                          src={cls.image}
+                          alt={
+                            cls.imageAlt ?? `${cls.name} at J-Neric Junior School`
+                          }
+                          onError={() =>
+                            setPrimaryClassErrors((prev) => ({
+                              ...prev,
+                              [cls.name]: true,
+                            }))
+                          }
+                          className={`w-full h-full object-cover ${
+                            index === 1 ? 'object-[50%_30%]' : 'object-top'
+                          }`}
+                        />
+                      ) : (
+                        <div className="w-full h-full p-3 flex flex-col justify-between bg-[#EEECE6]">
+                          <div className="w-full h-full border border-rule-gray bg-pure-white p-3 flex flex-col justify-between">
+                            <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-crest-sky">
+                              Primary Division
+                            </span>
+                            <p className="font-serif text-sm font-bold text-crest-navy">
+                              {cls.name}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   <h3 className="font-serif font-bold text-crest-navy text-lg sm:text-xl mb-1">
                     <span className="text-crest-sky mr-1.5">
                       0{index + 1}.
@@ -551,106 +618,60 @@ export function AcademicsPage() {
             </p>
           </div>
 
-          {/* Asymmetric 12-Column Living Archive Spread */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-            {/* Left Column (5 cols) — Sculptural Portrait Plate */}
-            <figure className="lg:col-span-5">
-              <div className="aspect-[4/5] w-full overflow-hidden rounded-[3px] border border-rule-gray bg-paper-ivory">
-                {!plateErrors[currentPlate.id] ? (
-                  <img
-                    key={currentPlate.id}
-                    src={currentPlate.image}
-                    alt={currentPlate.caption}
-                    onError={() =>
-                      setPlateErrors((prev) => ({
-                        ...prev,
-                        [currentPlate.id]: true,
-                      }))
-                    }
-                    className="w-full h-full object-cover transition-opacity duration-300"
-                  />
-                ) : (
-                  <div className="w-full h-full p-6 flex flex-col justify-between bg-paper-ivory">
-                    <div className="w-full h-full border border-rule-gray bg-pure-white p-6 flex flex-col justify-between">
-                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-crest-crimson">
-                        {currentPlate.plateLabel}
-                      </span>
-                      <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-slate mb-2">
-                          {currentPlate.tag}
-                        </p>
-                        <p className="font-serif text-xl sm:text-2xl font-bold text-crest-navy leading-snug">
-                          {currentPlate.id}. {currentPlate.title}
-                        </p>
-                        <p className="mt-3 text-xs text-muted-slate leading-relaxed">
-                          {currentPlate.caption}
-                        </p>
+          {/* Static 2-Column Editorial Gallery (Zero Cards, Zero Click-to-Expand) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-12 gap-y-12">
+            {coCurricularPlates.map((plate) => (
+              <article key={plate.id} className="flex flex-col">
+                <figure>
+                  <div className="aspect-[16/10] w-full overflow-hidden rounded-[3px] border border-rule-gray bg-paper-ivory">
+                    {!plateErrors[plate.id] ? (
+                      <img
+                        src={plate.image}
+                        alt={plate.caption}
+                        onError={() =>
+                          setPlateErrors((prev) => ({
+                            ...prev,
+                            [plate.id]: true,
+                          }))
+                        }
+                        className="w-full h-full object-cover object-top"
+                      />
+                    ) : (
+                      <div className="w-full h-full p-5 flex flex-col justify-between bg-paper-ivory">
+                        <div className="w-full h-full border border-rule-gray bg-pure-white p-5 flex flex-col justify-between">
+                          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-crest-crimson">
+                            {plate.plateLabel}
+                          </span>
+                          <p className="font-serif text-lg font-bold text-crest-navy leading-snug">
+                            {plate.id}. {plate.title}
+                          </p>
+                          <span className="font-mono text-[10px] text-muted-slate break-all">
+                            public{plate.image}
+                          </span>
+                        </div>
                       </div>
-                      <span className="font-mono text-[10px] text-muted-slate break-all">
-                        public{currentPlate.image}
-                      </span>
-                    </div>
+                    )}
                   </div>
-                )}
-              </div>
 
-              <figcaption>
-                <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-rule-gray pt-3">
-                  <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-crest-crimson">
-                    {currentPlate.plateLabel}
-                  </span>
-                </div>
-                <p className="text-xs italic text-muted-slate mt-1.5">
-                  {currentPlate.caption}
+                  <figcaption className="mt-3 flex items-baseline justify-between gap-4 border-t border-rule-gray pt-3">
+                    <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-crest-crimson">
+                      {plate.plateLabel}
+                    </span>
+                    <span className="text-xs font-semibold text-muted-slate shrink-0">
+                      {plate.tag}
+                    </span>
+                  </figcaption>
+                </figure>
+
+                <h3 className="mt-2.5 font-serif font-bold text-crest-navy text-xl sm:text-2xl">
+                  {plate.id}. {plate.title}
+                </h3>
+
+                <p className="mt-2 text-slate-ink/85 text-sm sm:text-base leading-relaxed">
+                  {plate.description}
                 </p>
-              </figcaption>
-            </figure>
-
-            {/* Right Column (7 cols) — Interactive Chapter Index */}
-            <div className="lg:col-span-7 lg:border-l lg:border-rule-gray lg:pl-10">
-              <div className="divide-y divide-rule-gray border-t border-b border-rule-gray">
-                {coCurricularPlates.map((plate, index) => {
-                  const isActive = activePlate === index;
-
-                  return (
-                    <button
-                      key={plate.id}
-                      type="button"
-                      onClick={() => setActivePlate(index)}
-                      aria-expanded={isActive}
-                      className="group w-full text-left py-6 transition-all cursor-pointer"
-                    >
-                      {isActive ? (
-                        <span className="block border-l-[3px] border-pencil-gold pl-5">
-                          <span className="flex items-baseline justify-between gap-4">
-                            <span className="font-serif font-bold text-crest-navy text-xl sm:text-2xl">
-                              {plate.id}. {plate.title}
-                            </span>
-                            <span className="text-xs font-semibold text-crest-crimson shrink-0">
-                              {plate.tag}
-                            </span>
-                          </span>
-                          <span className="block mt-3 text-slate-ink/85 text-sm sm:text-base leading-relaxed">
-                            {plate.description}
-                          </span>
-                        </span>
-                      ) : (
-                        <span className="block pl-5 group-hover:pl-6 transition-all">
-                          <span className="flex items-baseline justify-between gap-4">
-                            <span className="font-serif font-bold text-crest-navy/75 group-hover:text-crest-navy text-lg sm:text-xl transition-colors">
-                              {plate.id}. {plate.title}
-                            </span>
-                            <span className="text-xs text-muted-slate shrink-0">
-                              {plate.tag}
-                            </span>
-                          </span>
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>

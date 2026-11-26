@@ -505,7 +505,7 @@ export function AdmissionsPage() {
       {/* 02. Official SchoolPay Payment Guide */}
       <section
         id="schoolpay"
-        className="py-16 lg:py-20 bg-paper-ivory border-t border-rule-gray scroll-mt-24 overflow-hidden"
+        className="py-20 lg:py-28 bg-paper-ivory border-t border-rule-gray scroll-mt-24 overflow-hidden"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div data-aos="fade-up" data-aos-once="false">
@@ -522,7 +522,7 @@ export function AdmissionsPage() {
             data-aos="fade-up"
             data-aos-once="false"
             data-aos-delay="60"
-            className="pt-8 pb-6 border-b border-rule-gray text-center"
+            className="mt-4 pt-10 pb-8 border-b border-rule-gray text-center"
           >
             <h3 className="font-serif text-lg sm:text-xl font-bold text-crest-navy">
               Verified School pay Name:{' '}
@@ -531,14 +531,14 @@ export function AdmissionsPage() {
           </div>
 
           {/* 3 Payment Channels — Open 3-Column Ledger */}
-          <div className="py-8 border-b border-rule-gray grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-rule-gray">
+          <div className="py-12 lg:py-14 border-b border-rule-gray grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-rule-gray">
             {schoolProfile.schoolPay.channels.map((channel, channelIdx) => {
               const colSpacing =
                 channelIdx === 0
-                  ? 'pb-8 lg:pb-0 lg:pr-8'
+                  ? 'pb-10 lg:pb-0 lg:pr-12'
                   : channelIdx === 1
-                    ? 'py-8 lg:py-0 lg:px-8'
-                    : 'pt-8 lg:pt-0 lg:pl-8';
+                    ? 'py-10 lg:py-0 lg:px-12'
+                    : 'pt-10 lg:pt-0 lg:pl-12';
 
               return (
                 <div
@@ -548,21 +548,48 @@ export function AdmissionsPage() {
                   data-aos-delay={channelIdx * 100}
                   className={`flex flex-col ${colSpacing}`}
                 >
-                  <div className="border-b border-rule-gray pb-3">
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-crest-crimson">
-                      Channel {channel.index}
-                    </p>
-                    <h3 className="font-serif text-lg font-bold text-crest-navy mt-1">
-                      {channel.provider}
-                    </h3>
-                    <p className="text-xs font-semibold text-muted-slate mt-1">
+                  <div className="border-b border-rule-gray pb-5 lg:min-h-[128px] flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-crest-crimson">
+                          Channel {channel.index}
+                        </p>
+
+                        {channelIdx === 0 ? (
+                          <span className="h-8 w-14 bg-[#FFCC00] border border-[#E5B800] rounded-[3px] px-2 py-1 flex items-center justify-center shrink-0">
+                            <img
+                              src="/images/payments/mtn-momo.png"
+                              alt="MTN Mobile Money Logo"
+                              className="h-full w-full object-contain"
+                            />
+                          </span>
+                        ) : channelIdx === 1 ? (
+                          <span className="h-8 w-14 bg-pure-white border border-rule-gray rounded-[3px] px-2 py-1 flex items-center justify-center shrink-0">
+                            <img
+                              src="/images/payments/airtel-money.png"
+                              alt="Airtel Money Logo"
+                              className="h-full w-full object-contain"
+                            />
+                          </span>
+                        ) : (
+                          <span className="h-8 w-14 bg-crest-navy text-pure-white rounded-[3px] text-[10px] font-bold uppercase tracking-[0.12em] flex items-center justify-center shrink-0">
+                            BANK
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 className="font-serif text-lg font-bold text-crest-navy mt-2.5 leading-snug">
+                        {channel.provider}
+                      </h3>
+                    </div>
+                    <p className="text-xs font-semibold text-muted-slate mt-2">
                       {channel.dialOrPortal}
                     </p>
                   </div>
 
-                  <ol className="mt-4 space-y-3 text-sm text-slate-ink">
+                  <ol className="mt-6 space-y-4 text-sm text-slate-ink">
                     {channel.steps.map((stepText, idx) => (
-                      <li key={stepText} className="flex items-baseline gap-2.5">
+                      <li key={stepText} className="flex items-baseline gap-3">
                         <span className="font-serif text-xs font-bold text-crest-navy shrink-0">
                           0{idx + 1}.
                         </span>
@@ -580,9 +607,9 @@ export function AdmissionsPage() {
             data-aos="fade-up"
             data-aos-once="false"
             data-aos-delay="120"
-            className="pt-8"
+            className="pt-10 lg:pt-12"
           >
-            <div className="border-l-[3px] border-crest-crimson pl-5 space-y-2 text-sm text-slate-ink max-w-3xl">
+            <div className="border-l-[3px] border-crest-crimson pl-6 space-y-3 text-sm text-slate-ink max-w-3xl">
               <p className="text-xs font-bold uppercase tracking-[0.14em] text-crest-crimson">
                 Note:
               </p>

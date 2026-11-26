@@ -71,6 +71,102 @@ const HERO_SLIDES: HeroSlide[] = [
   },
 ];
 
+interface WhyChooseScene {
+  num: string;
+  shortTitle: string;
+  title: string;
+  image: string;
+  description: string;
+}
+
+interface FeaturedTestimonial {
+  familyCaption: string;
+  image: string;
+  quote: string;
+  author: string;
+  meta: string;
+}
+
+interface SecondaryQuote {
+  quote: string;
+  author: string;
+}
+
+const whyChooseScenes: WhyChooseScene[] = [
+  {
+    num: '01',
+    shortTitle: '01. Nurturing Classrooms',
+    title: '01. Nurturing Classrooms & Personal Attention',
+    image: '/images/campus/why-classrooms.jpg',
+    description:
+      'Small class sizes and attentive teachers who know every learner by name, temperament, and learning pace.',
+  },
+  {
+    num: '02',
+    shortTitle: '02. Literacy & DEAR Day',
+    title: '02. Strong Literacy & enjuba DEAR Day Culture',
+    image: '/images/campus/dear-day-reading.jpg',
+    description:
+      "Structured phonics from Baby Class upward, reinforced by whole-school participation in enjuba's Drop Everything And Read (DEAR) Day.",
+  },
+  {
+    num: '03',
+    shortTitle: '03. Christian Values',
+    title: '03. Christian Values & Moral Formation',
+    image: '/images/campus/morning-devotion.jpg',
+    description:
+      'Daily morning devotion, gratitude, honesty, and disciplined character formation woven naturally into everyday school life.',
+  },
+  {
+    num: '04',
+    shortTitle: '04. Parent Partnership',
+    title: '04. Transparent SchoolPay & Parent Partnership',
+    image: '/images/campus/parent-partnership.jpg',
+    description:
+      'Weekly progress feedback, nutritious campus meals, and seamless fee payments via SchoolPay (MTN MoMo, Airtel Money & partner banks).',
+  },
+];
+
+const featuredTestimonials: FeaturedTestimonial[] = [
+  {
+    familyCaption: 'THE MUKASA FAMILY • PARENTS OF P.3 & TOP CLASS LEARNERS',
+    image: '/images/community/family-mukasa.jpg',
+    quote:
+      "Since joining J-Neric in Baby Class, our daughter's confidence in reading and spoken English has blossomed. The teachers know her personally, communicate every week, and treat every child with genuine love.",
+    author: 'Mrs. Sarah & Mr. David Mukasa',
+    meta: 'Kajjansi, Wakiso District • Parents since 2024',
+  },
+  {
+    familyCaption: 'THE NAMONO FAMILY • PARENTS OF P.5 & MIDDLE CLASS LEARNERS',
+    image: '/images/community/family-namono.jpg',
+    quote:
+      'What stands out most is the calm discipline and reading culture. Our children come home eager to share stories from DEAR Day and complete their homework without being chased.',
+    author: 'Mr. Samuel & Mrs. Grace Namono',
+    meta: 'Entebbe Road Corridor • Parents since 2023',
+  },
+  {
+    familyCaption: 'THE KIGGUNDU FAMILY • PARENTS OF P.7 CANDIDATE',
+    image: '/images/community/family-kiggundu.jpg',
+    quote:
+      'From weekly assessments to transparent SchoolPay billing, everything is orderly and dependable. We feel genuinely partnered with as our son prepares for his PLE.',
+    author: 'Dr. & Mrs. Joseph Kiggundu',
+    meta: 'Wakiso District • Parents since 2022',
+  },
+];
+
+const secondaryQuotes: SecondaryQuote[] = [
+  {
+    quote:
+      'The transition to Baby Class was so gentle. The daily feedback from her teacher is incredible.',
+    author: 'Ms. Gloria Nabakooza • Baby Class Parent',
+  },
+  {
+    quote:
+      'J-Neric prepares them for PLE without losing focus on character, morality, and sports.',
+    author: 'Mr. Arthur Ssewankambo • P.6 Parent',
+  },
+];
+
 export function HomePage() {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [failedImages, setFailedImages] = useState<Record<number, boolean>>({});
@@ -83,8 +179,18 @@ export function HomePage() {
   const [failedPressImages, setFailedPressImages] = useState<
     Record<number, boolean>
   >({});
+  const [activeScene, setActiveScene] = useState(0);
+  const [failedWhyImages, setFailedWhyImages] = useState<
+    Record<string, boolean>
+  >({});
+  const [activeStory, setActiveStory] = useState(0);
+  const [failedTestimonialImages, setFailedTestimonialImages] = useState<
+    Record<number, boolean>
+  >({});
   const leadArticle = newsArticles[0];
   const secondaryArticles = newsArticles.slice(1, 3);
+  const currentWhyScene = whyChooseScenes[activeScene];
+  const currentTestimonial = featuredTestimonials[activeStory];
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -659,6 +765,278 @@ export function HomePage() {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Families Choose J-Neric — Interactive Documentary Stage + 4-Photo Filmstrip */}
+      <section
+        aria-label="Why Families Choose J-Neric"
+        className="bg-paper-ivory py-16 lg:py-20 border-b border-rule-gray"
+        data-aos="fade-up"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Clean Single-Row Editorial Header */}
+          <div className="pb-6 mb-8 border-b border-rule-gray flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-bold tracking-[0.1em] uppercase text-crest-crimson mb-2">
+                WHY FAMILIES CHOOSE J-NERIC
+              </p>
+              <h2 className="font-serif font-bold text-crest-navy text-2xl sm:text-3xl lg:text-4xl">
+                A Foundation Built on Care, Literacy &amp; Discipline
+              </h2>
+            </div>
+
+            <p className="text-sm text-muted-slate max-w-md">
+              Early childhood warmth paired with structured national-curriculum
+              excellence.
+            </p>
+          </div>
+
+          {/* Wide Documentary Cinema Frame */}
+          <div className="w-full aspect-[21/9] max-h-[430px] overflow-hidden rounded-[3px] border border-rule-gray bg-pure-white">
+            {!failedWhyImages[currentWhyScene.num] ? (
+              <img
+                key={currentWhyScene.num}
+                src={currentWhyScene.image}
+                alt={currentWhyScene.title}
+                onError={() =>
+                  setFailedWhyImages((prev) => ({
+                    ...prev,
+                    [currentWhyScene.num]: true,
+                  }))
+                }
+                className="w-full h-full object-cover object-top transition-opacity duration-300"
+              />
+            ) : (
+              <div className="w-full h-full p-6 sm:p-10 flex flex-col justify-between bg-[#EEECE6]">
+                <div className="w-full h-full border border-rule-gray bg-pure-white p-6 sm:p-8 flex flex-col justify-between">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-crest-crimson">
+                      SCENE {currentWhyScene.num} / 04 &bull; CAMPUS DOCUMENTARY
+                    </span>
+                    <span className="font-mono text-[10px] text-muted-slate hidden sm:inline">
+                      public{currentWhyScene.image}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-serif text-xl sm:text-2xl font-bold text-crest-navy leading-snug">
+                      {currentWhyScene.title}
+                    </p>
+                    <p className="mt-2 text-xs sm:text-sm text-muted-slate max-w-xl leading-relaxed">
+                      {currentWhyScene.description}
+                    </p>
+                  </div>
+                  <span className="font-serif italic text-xs text-crest-navy">
+                    &ldquo;{schoolProfile.motto}&rdquo;
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Active Story Bar */}
+          <div className="mt-6 pb-8 border-b border-rule-gray">
+            <div className="border-l-[3px] border-pencil-gold pl-5">
+              <h3 className="font-serif font-bold text-crest-navy text-lg sm:text-xl inline">
+                {currentWhyScene.title}
+              </h3>
+              <span
+                aria-hidden="true"
+                className="hidden sm:inline text-muted-slate mx-2"
+              >
+                &mdash;
+              </span>
+              <p className="text-slate-ink/85 text-sm sm:text-base leading-relaxed mt-1 sm:mt-0 sm:inline">
+                {currentWhyScene.description}
+              </p>
+            </div>
+          </div>
+
+          {/* Interactive 4-Photo Filmstrip Selector */}
+          <div className="pt-6 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            {whyChooseScenes.map((scene, index) => {
+              const isActive = activeScene === index;
+
+              return (
+                <button
+                  key={scene.num}
+                  type="button"
+                  onClick={() => setActiveScene(index)}
+                  aria-pressed={isActive}
+                  className="group text-left focus:outline-none cursor-pointer"
+                >
+                  <span
+                    className={`block aspect-[16/10] w-full overflow-hidden rounded-[3px] mb-2.5 transition-all bg-pure-white ${
+                      isActive
+                        ? 'border-2 border-crest-crimson opacity-100'
+                        : 'border border-rule-gray opacity-75 group-hover:opacity-100'
+                    }`}
+                  >
+                    {!failedWhyImages[scene.num] ? (
+                      <img
+                        src={scene.image}
+                        alt={scene.shortTitle}
+                        onError={() =>
+                          setFailedWhyImages((prev) => ({
+                            ...prev,
+                            [scene.num]: true,
+                          }))
+                        }
+                        className="w-full h-full object-cover object-top"
+                      />
+                    ) : (
+                      <span className="flex w-full h-full p-2.5 flex-col justify-between bg-[#EEECE6]">
+                        <span className="flex w-full h-full border border-rule-gray bg-pure-white p-2.5 flex-col justify-between">
+                          <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-crest-crimson">
+                            Scene {scene.num}
+                          </span>
+                          <span className="font-serif text-xs font-bold text-crest-navy leading-tight">
+                            {scene.shortTitle}
+                          </span>
+                        </span>
+                      </span>
+                    )}
+                  </span>
+                  <span
+                    className={`block text-xs sm:text-sm transition-colors ${
+                      isActive
+                        ? 'font-bold text-crest-navy'
+                        : 'font-medium text-muted-slate group-hover:text-crest-navy'
+                    }`}
+                  >
+                    {scene.shortTitle}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Parent Testimonials — Editorial Community Voices Spread */}
+      <section
+        aria-label="Parent Testimonials"
+        className="bg-pure-white py-16 lg:py-20 border-b border-rule-gray"
+        data-aos="fade-up"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header with Quiet Typographic Pagination */}
+          <div className="pb-6 mb-10 border-b border-rule-gray flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-bold tracking-[0.1em] uppercase text-crest-crimson mb-2">
+                VOICES FROM OUR COMMUNITY
+              </p>
+              <h2 className="font-serif font-bold text-crest-navy text-2xl sm:text-3xl lg:text-4xl">
+                Trusted by Families Across Our Community
+              </h2>
+            </div>
+
+            <div className="flex items-center gap-5 text-xs sm:text-sm shrink-0">
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveStory(
+                    (prev) =>
+                      (prev - 1 + featuredTestimonials.length) %
+                      featuredTestimonials.length,
+                  )
+                }
+                className="text-muted-slate hover:text-crest-navy font-medium transition-colors cursor-pointer"
+              >
+                &larr; Previous
+              </button>
+              <span className="font-bold text-crest-navy tracking-wider">
+                0{activeStory + 1} / 0{featuredTestimonials.length}
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveStory(
+                    (prev) => (prev + 1) % featuredTestimonials.length,
+                  )
+                }
+                className="text-muted-slate hover:text-crest-navy font-medium transition-colors cursor-pointer"
+              >
+                Next &rarr;
+              </button>
+            </div>
+          </div>
+
+          {/* Asymmetric 12-Column Featured Parent Spread */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-12 border-b border-rule-gray">
+            {/* Left Column (4 cols) — Borderless Family Portrait */}
+            <figure className="lg:col-span-4">
+              <div className="aspect-[4/5] w-full overflow-hidden rounded-[3px] border border-rule-gray bg-paper-ivory">
+                {!failedTestimonialImages[activeStory] ? (
+                  <img
+                    key={currentTestimonial.image}
+                    src={currentTestimonial.image}
+                    alt={currentTestimonial.author}
+                    onError={() =>
+                      setFailedTestimonialImages((prev) => ({
+                        ...prev,
+                        [activeStory]: true,
+                      }))
+                    }
+                    className="w-full h-full object-cover object-top"
+                  />
+                ) : (
+                  <div className="w-full h-full p-6 flex flex-col justify-between bg-paper-ivory">
+                    <div className="w-full h-full border border-rule-gray bg-pure-white p-6 flex flex-col justify-between">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-crest-crimson">
+                        FAMILY PORTRAIT 0{activeStory + 1} / 0
+                        {featuredTestimonials.length}
+                      </span>
+                      <div>
+                        <p className="font-serif text-lg sm:text-xl font-bold text-crest-navy leading-snug">
+                          {currentTestimonial.author}
+                        </p>
+                        <p className="mt-2 text-xs text-muted-slate leading-relaxed">
+                          {currentTestimonial.meta}
+                        </p>
+                      </div>
+                      <span className="font-mono text-[10px] text-muted-slate break-all">
+                        public{currentTestimonial.image}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <figcaption className="mt-3 text-[11px] font-bold tracking-[0.08em] uppercase text-muted-slate">
+                {currentTestimonial.familyCaption}
+              </figcaption>
+            </figure>
+
+            {/* Right Column (8 cols) — Pull-Quote & Attribution */}
+            <div className="lg:col-span-8 border-l-[3px] border-pencil-gold pl-6 sm:pl-8">
+              <blockquote className="font-serif font-bold text-crest-navy text-xl sm:text-2xl lg:text-[28px] leading-snug mb-6">
+                &ldquo;{currentTestimonial.quote}&rdquo;
+              </blockquote>
+              <p className="font-serif font-bold text-crest-navy text-base sm:text-lg">
+                {currentTestimonial.author}
+              </p>
+              <p className="text-xs sm:text-sm text-muted-slate mt-0.5">
+                {currentTestimonial.meta}
+              </p>
+            </div>
+          </div>
+
+          {/* Open 2-Column Secondary Quote Strip */}
+          <div className="pt-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:divide-x md:divide-rule-gray">
+            {secondaryQuotes.map((item, index) => (
+              <div
+                key={item.author}
+                className={index === 0 ? 'md:pr-8' : 'md:pl-8'}
+              >
+                <blockquote className="font-serif font-bold text-crest-navy text-base sm:text-lg leading-snug mb-2">
+                  &ldquo;{item.quote}&rdquo;
+                </blockquote>
+                <p className="text-xs sm:text-sm text-muted-slate">
+                  &mdash; {item.author}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

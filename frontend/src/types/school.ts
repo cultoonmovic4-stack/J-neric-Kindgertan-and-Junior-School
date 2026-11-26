@@ -118,6 +118,8 @@ export interface ClassLevel {
   name: string;
   ageRange: string;
   focus: string;
+  image?: string;
+  imageAlt?: string;
 }
 
 export interface AcademicDivision {

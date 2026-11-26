@@ -169,7 +169,7 @@ export function NewsPage() {
               number="01."
               eyebrow="Campus Press"
               title="School Press & Announcements"
-              description="Filter by category and expand any notice to read the complete story from our Namulanda campus."
+              description="Filter by category to browse campus stories, milestones, and official notices from our Namulanda campus."
               layout="split"
               showDivider={false}
             />
@@ -219,7 +219,7 @@ export function NewsPage() {
             })}
           </div>
 
-          {/* Open Editorial Press List (Line Separators, Zero Cards) */}
+          {/* Open Editorial Press List (Always-Visible Photography, Zero Dropdowns, Zero Cards) */}
           <div className="divide-y divide-rule-gray border-b border-rule-gray">
             {filteredArticles.map((article, index) => {
               const isExpanded = expandedArticleId === article.id;
@@ -230,102 +230,69 @@ export function NewsPage() {
                   data-aos="fade-up"
                   data-aos-once="false"
                   data-aos-delay={Math.min(index * 75, 225)}
-                  className="py-8"
+                  className="py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start"
                 >
-                  <div className="flex items-start justify-between gap-4 sm:gap-6">
-                    <div className="flex-1 min-w-0 max-w-3xl">
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-[0.15em]">
-                        <span className="font-serif text-crest-navy">
-                          0{index + 1}.
-                        </span>
-                        <span className="text-crest-crimson">
-                          {article.category}
-                        </span>
-                        <span className="text-rule-gray" aria-hidden="true">
-                          |
-                        </span>
-                        <span className="text-muted-slate">
-                          {article.displayDate}
-                        </span>
-                        <span className="text-rule-gray" aria-hidden="true">
-                          |
-                        </span>
-                        <span className="text-muted-slate">{article.author}</span>
-                      </div>
-
-                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-crest-navy mt-2.5 leading-snug">
-                        {article.title}
-                      </h3>
-
-                      <p className="mt-3 text-sm sm:text-base text-slate-ink leading-relaxed">
-                        {article.summary}
-                      </p>
-                    </div>
-
-                    <div className="shrink-0 pt-0.5">
-                      <button
-                        type="button"
-                        aria-expanded={isExpanded}
-                        aria-label={
-                          isExpanded
-                            ? `Collapse article: ${article.title}`
-                            : `Read full article: ${article.title}`
-                        }
-                        title={
-                          isExpanded ? 'Collapse article' : 'Read full article'
-                        }
-                        onClick={() =>
-                          setExpandedArticleId(isExpanded ? null : article.id)
-                        }
-                        className={`h-10 w-10 inline-flex items-center justify-center border rounded-[3px] transition-colors cursor-pointer ${
-                          isExpanded
-                            ? 'bg-crest-navy text-pure-white border-crest-navy hover:bg-crest-crimson hover:border-crest-crimson'
-                            : 'bg-paper-ivory text-crest-navy border-rule-gray hover:border-crest-navy hover:bg-pure-white'
-                        }`}
-                      >
-                        <svg
-                          viewBox="0 0 20 20"
-                          width="18"
-                          height="18"
-                          aria-hidden="true"
-                          className={`transition-transform duration-300 ${
-                            isExpanded ? 'rotate-180' : 'rotate-0'
-                          }`}
-                        >
-                          <polyline
-                            points="5,7.5 10,12.5 15,7.5"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </button>
-                    </div>
+                  {/* Always-Visible Editorial Photograph */}
+                  <div className="lg:col-span-5">
+                    <EditorialImageFrame
+                      src={article.imagePath}
+                      alt={article.title}
+                      caption={article.imageCaption}
+                      fallbackLabel={article.category}
+                      fallbackTitle={article.displayDate}
+                      fallbackDetail={article.author}
+                      aspectClass="aspect-[16/10]"
+                    />
                   </div>
 
-                  {isExpanded && (
-                    <div className="mt-7 pt-7 border-t border-rule-gray grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                      <div className="lg:col-span-7 space-y-4 text-sm sm:text-base text-slate-ink leading-relaxed">
+                  {/* Story Copy & Inline Read-More Control */}
+                  <div className="lg:col-span-7 min-w-0">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-[0.15em]">
+                      <span className="font-serif text-crest-navy">
+                        0{index + 1}.
+                      </span>
+                      <span className="text-crest-crimson">
+                        {article.category}
+                      </span>
+                      <span className="text-rule-gray" aria-hidden="true">
+                        |
+                      </span>
+                      <span className="text-muted-slate">
+                        {article.displayDate}
+                      </span>
+                      <span className="text-rule-gray" aria-hidden="true">
+                        |
+                      </span>
+                      <span className="text-muted-slate">{article.author}</span>
+                    </div>
+
+                    <h3 className="font-serif text-xl sm:text-2xl font-bold text-crest-navy mt-3 leading-snug">
+                      {article.title}
+                    </h3>
+
+                    <p className="mt-3 text-sm sm:text-base text-slate-ink leading-relaxed">
+                      {article.summary}
+                    </p>
+
+                    {isExpanded && (
+                      <div className="mt-5 pt-5 border-t border-rule-gray space-y-4 text-sm sm:text-base text-slate-ink/90 leading-relaxed">
                         {article.body.map((paragraph) => (
                           <p key={paragraph}>{paragraph}</p>
                         ))}
                       </div>
+                    )}
 
-                      <div className="lg:col-span-5">
-                        <EditorialImageFrame
-                          src={article.imagePath}
-                          alt={article.title}
-                          caption={article.imageCaption}
-                          fallbackLabel={article.category}
-                          fallbackTitle={article.displayDate}
-                          fallbackDetail={article.author}
-                          aspectClass="aspect-[16/10]"
-                        />
-                      </div>
-                    </div>
-                  )}
+                    <button
+                      type="button"
+                      aria-expanded={isExpanded}
+                      onClick={() =>
+                        setExpandedArticleId(isExpanded ? null : article.id)
+                      }
+                      className="mt-5 inline-block text-sm font-semibold text-crest-crimson underline underline-offset-4 hover:text-crest-navy transition-colors cursor-pointer"
+                    >
+                      {isExpanded ? 'Show Less' : 'Read Full Story'}
+                    </button>
+                  </div>
                 </article>
               );
             })}
